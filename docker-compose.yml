@@ -11,8 +11,8 @@ services:
       - certs:/var/lib/https-portal
       - nginx-log:/var/log/nginx
     environment:
-      STAGE: 'production'
-      FORCE_RENEW: 'true'
+      STAGE: 'local'
+      # FORCE_RENEW: 'true'
       DOMAINS: 'apex-border.gootalife.work -> http://client:8888,
         apex-border-api.gootalife.work -> http://apiserver:8000'
   apiserver:
