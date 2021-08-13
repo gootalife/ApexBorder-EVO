@@ -4,12 +4,14 @@ import platforms from '../../common/platforms.json';
 import { Border } from '../../common/entities/border';
 import { RPLog } from '../../common/entities/rpLog';
 
+const playersPerPage = 100;
+
 async function fetchBorderAsync(plat: string): Promise<number> {
   let borderRp = -1;
   let browser;
   let window;
   try {
-    const targetPage = Math.ceil(Number(process.env.BORDER) / Number(process.env.PLAYERS_PER_PAGE));
+    const targetPage = Math.ceil(Number(process.env.BORDER) / playersPerPage);
     const url = `https://apex.tracker.gg/legacy/leaderboards/${plat}/RankScore?page=${targetPage}`;
     browser = await puppeteer.launch({
       headless: true,
@@ -37,7 +39,7 @@ async function fetchBorderAsync(plat: string): Promise<number> {
       });
       return result;
     });
-    if (ranking.length === Number(process.env.PLAYERS_PER_PAGE)) {
+    if (ranking.length === playersPerPage) {
       borderRp = Number(ranking[49].trim().replace(',', ''));
     } else {
       throw new Error(`Request to ${url} failed.`);
@@ -71,9 +73,8 @@ export async function fetchBordersAsync(): Promise<Border[]> {
 
 async function fetchRPRankingAsync(plat: string): Promise<number[]> {
   const border = Number(process.env.BORDER);
-  const playersPerPage = Number(process.env.PLAYERS_PER_PAGE);
   let rpRanking: number[] = [];
-  const count = Math.ceil(Number(border) / Number(playersPerPage));
+  const count = Math.ceil(Number(border) / playersPerPage);
   let browser;
   let window;
   try {

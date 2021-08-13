@@ -11,9 +11,8 @@ services:
       - certs:/var/lib/https-portal
       - nginx-log:/var/log/nginx
     environment:
-      STAGE: 'local'
-      #STAGE: 'production'
-      # FORCE_RENEW: 'true'
+      STAGE: 'production'
+      FORCE_RENEW: 'true'
       DOMAINS: 'apex-border.gootalife.work -> http://client:8888,
         apex-border-api.gootalife.work -> http://apiserver:8000'
   apiserver:
@@ -37,7 +36,6 @@ services:
       - DB_DATABASE
       - SEASON
       - BORDER
-      - PLAYERS_PER_PAGE
       - TZ
     command: npm start
   client:
@@ -61,10 +59,8 @@ services:
       - DB_DATABASE
       - SEASON
       - BORDER
-      - PLAYERS_PER_PAGE
       - TZ
     command: npm run serve
-
   cron:
     build:
       context: .
@@ -82,7 +78,6 @@ services:
       - DB_DATABASE
       - SEASON
       - BORDER
-      - PLAYERS_PER_PAGE
       - TZ
     cap_add:
       - SYS_ADMIN
