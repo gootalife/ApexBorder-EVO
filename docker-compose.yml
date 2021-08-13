@@ -1,0 +1,112 @@
+version: '3.8'
+services:
+  https-portal:
+    image: steveltn/https-portal:1
+    container_name: https-portal
+    ports:
+      - '80:80'
+      - '443:443'
+    restart: always
+    volumes:
+      - certs:/var/lib/https-portal
+      - nginx-log:/var/log/nginx
+    environment:
+      STAGE: 'local'
+      #STAGE: 'production'
+      # FORCE_RENEW: 'true'
+      DOMAINS: 'apex-border.gootalife.work -> http://client:8888,
+        apex-border-api.gootalife.work -> http://apiserver:8000'
+  apiserver:
+    build:
+      context: .
+      dockerfile: apiserver.Dockerfile
+    container_name: apiserver
+    restart: always
+    ports:
+      - '8000:8000'
+    depends_on:
+      - https-portal
+      - db
+    working_dir: /app/apiserver
+    environment:
+      - NODE_ENV=production
+      - DB_HOST
+      - DB_PORT
+      - DB_USER
+      - DB_PASSWORD
+      - DB_DATABASE
+      - SEASON
+      - BORDER
+      - PLAYERS_PER_PAGE
+      - TZ
+    command: npm start
+  client:
+    build:
+      context: .
+      dockerfile: client.Dockerfile
+    container_name: client
+    ports:
+      - '8888:8888'
+    restart: always
+    depends_on:
+      - https-portal
+      - db
+    working_dir: /app/client
+    environment:
+      - NODE_ENV=production
+      - DB_HOST
+      - DB_PORT
+      - DB_USER
+      - DB_PASSWORD
+      - DB_DATABASE
+      - SEASON
+      - BORDER
+      - PLAYERS_PER_PAGE
+      - TZ
+    command: npm run serve
+
+  cron:
+    build:
+      context: .
+      dockerfile: cron.Dockerfile
+    container_name: cron
+    depends_on:
+      - db
+    working_dir: /app/cron
+    environment:
+      - NODE_ENV=production
+      - DB_HOST
+      - DB_PORT
+      - DB_USER
+      - DB_PASSWORD
+      - DB_DATABASE
+      - SEASON
+      - BORDER
+      - PLAYERS_PER_PAGE
+      - TZ
+    cap_add:
+      - SYS_ADMIN
+    shm_size: 128m
+    command: npm start
+  db:
+    build:
+      context: .
+      dockerfile: db.Dockerfile
+    container_name: db
+    restart: always
+    tty: true
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_DATABASE}
+    ports:
+      - '5432:${DB_PORT}'
+    volumes:
+      - db-data:/var/lib/postgresql/data
+      - db-log:/var/log
+
+volumes:
+  db-data:
+  db-log:
+  certs:
+  nginx-log:
