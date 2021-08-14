@@ -7,9 +7,9 @@ import { Border } from '../common/entities/border';
 
 async function updateRPLogAsync(): Promise<boolean> {
   let isCompleted = false;
+  const rpLog = await scraping.fetchRPRankingsAsync();
   let connection = await DBManager.getConnectionAsync();
   try {
-    const rpLog = await scraping.fetchRPRankingsAsync();
     const repository = connection.getRepository(RPLog);
     await repository.insert(rpLog);
     isCompleted = true;
@@ -38,9 +38,9 @@ async function insertEmptyData(): Promise<boolean> {
 
 async function updateBordersAsync(): Promise<boolean> {
   let isCompleted = false;
+  const borders = await scraping.fetchBordersAsync();
   let connection = await DBManager.getConnectionAsync();
   try {
-    const borders = await scraping.fetchBordersAsync();
     const repository = connection.getRepository(Border);
     await repository.save(borders);
     isCompleted = true;
