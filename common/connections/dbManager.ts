@@ -5,6 +5,7 @@ import { Border } from '../entities/border';
 export class DBManager {
   public static async getConnectionAsync(): Promise<Connection> {
     const option: ConnectionOptions = {
+      name: 'postgres',
       type: 'postgres',
       host: process.env.DB_HOST,
       port: Number(process.env.DB_PORT),
@@ -18,8 +19,8 @@ export class DBManager {
     const manager = getConnectionManager();
     let connection: Connection;
     // すでにあるならそれを使用
-    if (manager.has('default')) {
-      connection = manager.get('default');
+    if (manager.has('postgres')) {
+      connection = manager.get('postgres');
     }
     // 新規作成
     if (!connection?.isConnected) {

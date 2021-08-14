@@ -2,7 +2,7 @@ import cron from 'node-cron';
 import moment from 'moment';
 import { DBManager } from '../common/connections/dbManager';
 import { RPLog } from '../common/entities/rpLog';
-import * as scraping from './functions/scraping';
+import * as scraping from './functions/apiHelper';
 import { Border } from '../common/entities/border';
 
 async function updateRPLogAsync(): Promise<boolean> {

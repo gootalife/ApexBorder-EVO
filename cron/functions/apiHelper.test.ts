@@ -1,16 +1,17 @@
-import * as db from './scraping';
+import * as helper from './apiHelper';
 import platforms from '../../common/platforms.json';
 
-describe('dbFunctionTest', () => {
+describe('apiHelperTest', () => {
   test('fetchBordersAsyncTest', async () => {
-    const result = await db.fetchBordersAsync();
+    const result = await helper.fetchBordersAsync();
     expect(result.length).toBe(Object.keys(platforms).length);
-  });
+  }, 30000);
   test('fetchRPRankingsAsyncTest', async () => {
-    const result = await db.fetchRPRankingsAsync();
+    const result = await helper.fetchRPRankingsAsync();
     expect(result.season).toBe(process.env.SEASON);
     expect(result.origin.length).toBe(Number(process.env.BORDER));
     expect(result.ps.length).toBe(Number(process.env.BORDER));
     expect(result.xbox.length).toBe(Number(process.env.BORDER));
-  }, 100000);
+    expect(result.valid).toBe(true);
+  }, 30000);
 });
