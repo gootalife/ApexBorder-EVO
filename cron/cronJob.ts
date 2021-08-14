@@ -77,5 +77,5 @@ const task = cron.schedule('0 15,45 * * * *', async () => {
     console.log(`${moment().format('YYYY-MM-DD HH:mm:ss')} *** Updating borders failed. ***`);
   }
 });
-updateBordersAsync();
+
 task.start();
