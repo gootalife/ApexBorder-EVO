@@ -103,14 +103,14 @@ export default class Index extends Vue {
 
   async fetchData(): Promise<void> {
     this.overlay = true;
-    this.rpLogs = await this.getRPLogsOnSeasonAsync('8sp2');
-    this.borders = await this.getBordersAsync();
+    this.rpLogs = await this.getRPLogsOnSeasonAsync(process.env.SEASON);
+    this.borders = await this.getBordersAsync(process.env.SEASON);
     this.overlay = false;
   }
 
   @Watch('selectedPlatform')
   async renderChartAsync(): Promise<void> {
-    this.rpLogs = await this.getRPLogsOnSeasonAsync('8sp2');
+    this.rpLogs = await this.getRPLogsOnSeasonAsync(process.env.SEASON);
     let datasets: ChartDataSets[] = [];
     const selected = this.selectedPlatform;
     this.platforms.forEach((key) => {
