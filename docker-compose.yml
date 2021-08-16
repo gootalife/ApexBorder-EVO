@@ -52,7 +52,7 @@ services:
       context: .
       dockerfile: client.Dockerfile
     image: gootalife/apex-border-client
-    container_name: gootalife/client
+    container_name: client
     tty: true
     ports:
       - '8888:8888'
@@ -66,7 +66,7 @@ services:
       context: .
       dockerfile: cron.Dockerfile
     image: gootalife/apex-border-cron
-    container_name: gootalife/cron
+    container_name: cron
     restart: always
     tty: true
     depends_on:
@@ -88,7 +88,7 @@ services:
       context: .
       dockerfile: db.Dockerfile
     image: gootalife/apex-border-db
-    container_name: gootalife/db
+    container_name: db
     restart: always
     tty: true
     environment:
