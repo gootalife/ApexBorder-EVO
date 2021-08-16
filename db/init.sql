@@ -2,7 +2,7 @@ BEGIN;
 
 CREATE TABLE public.rplog
 (
-    id integer NOT NULL,
+    id serial NOT NULL,
     date text NOT NULL,
     season text,
     origin integer[] NOT NULL,

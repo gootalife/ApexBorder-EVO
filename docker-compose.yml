@@ -2,7 +2,7 @@ version: '3.8'
 services:
   https-portal:
     image: steveltn/https-portal:1
-    container_name: gootalife/https-portal
+    container_name: https-portal
     ports:
       - '80:80'
       - '443:443'
@@ -27,7 +27,8 @@ services:
     build:
       context: .
       dockerfile: apiserver.Dockerfile
-    container_name: gootalife/apiserver
+    image: gootalife/apex-border-apiserver
+    container_name: apiserver
     restart: always
     tty: true
     ports:
@@ -50,6 +51,7 @@ services:
     build:
       context: .
       dockerfile: client.Dockerfile
+    image: gootalife/apex-border-client
     container_name: gootalife/client
     tty: true
     ports:
@@ -63,6 +65,7 @@ services:
     build:
       context: .
       dockerfile: cron.Dockerfile
+    image: gootalife/apex-border-cron
     container_name: gootalife/cron
     restart: always
     tty: true
@@ -84,6 +87,7 @@ services:
     build:
       context: .
       dockerfile: db.Dockerfile
+    image: gootalife/apex-border-db
     container_name: gootalife/db
     restart: always
     tty: true
