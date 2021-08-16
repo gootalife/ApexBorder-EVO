@@ -2,7 +2,7 @@ version: '3.8'
 services:
   https-portal:
     image: steveltn/https-portal:1
-    container_name: https-portal
+    container_name: gootalife/https-portal
     ports:
       - '80:80'
       - '443:443'
@@ -27,7 +27,7 @@ services:
     build:
       context: .
       dockerfile: apiserver.Dockerfile
-    container_name: apiserver
+    container_name: gootalife/apiserver
     restart: always
     tty: true
     ports:
@@ -50,7 +50,7 @@ services:
     build:
       context: .
       dockerfile: client.Dockerfile
-    container_name: client
+    container_name: gootalife/client
     tty: true
     ports:
       - '8888:8888'
@@ -63,7 +63,7 @@ services:
     build:
       context: .
       dockerfile: cron.Dockerfile
-    container_name: cron
+    container_name: gootalife/cron
     restart: always
     tty: true
     depends_on:
@@ -84,7 +84,7 @@ services:
     build:
       context: .
       dockerfile: db.Dockerfile
-    container_name: db
+    container_name: gootalife/db
     restart: always
     tty: true
     environment:
