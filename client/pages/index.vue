@@ -102,24 +102,25 @@ export default class Index extends Vue {
   }
 
   async fetchData(): Promise<void> {
+    const season = this.$config.SEASON;
     this.overlay = true;
-    this.rpLogs = await this.getRPLogsOnSeasonAsync(process.env.SEASON);
-    this.borders = await this.getBordersAsync(process.env.SEASON);
+    this.rpLogs = await this.getRPLogsOnSeasonAsync(season);
+    this.borders = await this.getBordersAsync();
     this.overlay = false;
   }
 
   @Watch('selectedPlatform')
   async renderChartAsync(): Promise<void> {
-    this.rpLogs = await this.getRPLogsOnSeasonAsync(process.env.SEASON);
+    const season = this.$config.SEASON;
+    const border = Number(this.$config.BORDER);
+    this.rpLogs = await this.getRPLogsOnSeasonAsync(season);
     let datasets: ChartDataSets[] = [];
     const selected = this.selectedPlatform;
     this.platforms.forEach((key) => {
       const plat = key as keyof typeof platforms;
       datasets.push({
         label: plat,
-        data: this.rpLogs.map(
-          (log) => log[plat][Number(process.env.border) - 1]
-        ),
+        data: this.rpLogs.map((log) => log[plat][border - 1]),
         fill: false,
         lineTension: 0
       });
@@ -149,7 +150,7 @@ export default class Index extends Vue {
     let borders: border.Border[] = [];
     try {
       const res = await fetch(
-        'https://apex-border-api.gootalife.work/api/v1/borders'
+        `https://${this.$config.API_SERVER_DOMAIN}/api/v1/borders`
       );
       if (res.ok) {
         borders = border.Convert.toBorder(await res.text());
@@ -166,7 +167,7 @@ export default class Index extends Vue {
     let rpLogs: rpLog.RPLog[] = [];
     try {
       const res = await fetch(
-        `https://apex-border-api.gootalife.work/api/v1/rplogs/season/${season}`
+        `https://${this.$config.API_SERVER_DOMAIN}/api/v1/rplogs/season/${season}`
       );
       if (res.ok) {
         rpLogs = rpLog.Convert.toRPLog(await res.text());
@@ -186,7 +187,7 @@ export default class Index extends Vue {
     let rpLogs: rpLog.RPLog[] = [];
     try {
       const res = await fetch(
-        `https://apex-border-api.gootalife.work/api/v1/rplogs/${beginning}/${ending}`
+        `https://${this.$config.API_SERVER_DOMAIN}/api/v1/rplogs/${beginning}/${ending}`
       );
       if (res.ok) {
         rpLogs = rpLog.Convert.toRPLog(await res.text());

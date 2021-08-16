@@ -14,8 +14,15 @@ services:
     environment:
       STAGE: 'local'
       # FORCE_RENEW: 'true'
-      DOMAINS: 'apex-border.gootalife.work -> http://client:8888,
-        apex-border-api.gootalife.work -> http://apiserver:8000'
+      DOMAINS: '${CLIENT_DOMAIN} -> http://client:8888,
+      ${API_SERVER_DOMAIN} -> http://apiserver:8000'
+      CLINET_DOMAIN:
+      API_SERVER_DOMAIN:
+      CUSTOM_NGINX_SERVER_CONFIG_BLOCK: |
+        add_header Access-Control-Allow-Origin *;
+        add_header Access-Control-Allow-Methods "POST, GET, OPTIONS";
+        add_header Access-Control-Allow-Headers "Origin, Authorization, Accept";
+        add_header Access-Control-Allow-Credentials true;
   apiserver:
     build:
       context: .
@@ -29,7 +36,7 @@ services:
       - db
     working_dir: /app/apiserver
     environment:
-      - NODE_ENV=production
+      - NODE_ENV
       - DB_HOST
       - DB_PORT
       - DB_USER
@@ -51,16 +58,6 @@ services:
     depends_on:
       - db
     working_dir: /app/client
-    environment:
-      - NODE_ENV=production
-      - DB_HOST
-      - DB_PORT
-      - DB_USER
-      - DB_PASSWORD
-      - DB_DATABASE
-      - SEASON
-      - BORDER
-      - TZ
     command: npm run serve
   cron:
     build:
@@ -73,7 +70,7 @@ services:
       - db
     working_dir: /app/cron
     environment:
-      - NODE_ENV=production
+      - NODE_ENV
       - DB_HOST
       - DB_PORT
       - DB_USER

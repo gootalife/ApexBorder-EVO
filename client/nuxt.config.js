@@ -81,5 +81,15 @@ export default {
       }
     }
   },
+  // env: {
+  //   SEASON: process.env.SEASON,
+  //   BORDER: process.env.BORDER,
+  //   API_SERVER_DOMAIN: process.env.API_SERVER_DOMAIN
+  // },
+  publicRuntimeConfig: {
+    SEASON: process.env.SEASON,
+    BORDER: process.env.BORDER,
+    API_SERVER_DOMAIN: process.env.API_SERVER_DOMAIN
+  },
   target: 'static'
 };

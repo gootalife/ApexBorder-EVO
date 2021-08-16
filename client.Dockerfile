@@ -13,4 +13,5 @@ COPY ./common ./
 
 WORKDIR /app/client
 COPY ./client ./
+COPY ./.env .
 RUN npm run generate
