@@ -20,7 +20,7 @@
     "chartjs": "^0.3.24",
     "chartjs-plugin-colorschemes": "^0.4.0",
     "core-js": "^3.8.3",
-    "nuxt": "^2.14.12",
+    "nuxt": "^2.13.3",
     "nuxt-property-decorator": "^2.9.1",
     "serve": "^12.0.0"
   },
